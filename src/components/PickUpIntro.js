@@ -17,7 +17,7 @@ const IntroText = styled.p`
 const PickUpIntro = () => {
     return (
         <IntroSection>
-            <IntroHeading>52 Card Pick Up</IntroHeading>
+            <IntroHeading>52 Card Click Up</IntroHeading>
             <IntroText>Pick up all the cards as fast as you can... Go!!</IntroText>
         </IntroSection>
     )
