@@ -62,8 +62,8 @@ const PickUpBox = () => {
     return (
         <PickUpStyle>
             <PickUpIntro />
-            <GameOver resetGame={resetGame}/>
-            {/* {cardsDisplayed ? <CardList listOfCards={allCards} updateDisplay={updateDisplay}/> : <GameOver resetGame={resetGame}/>} */}
+            {/* <GameOver resetGame={resetGame}/> */}
+            {cardsDisplayed ? <CardList listOfCards={allCards} updateDisplay={updateDisplay}/> : <GameOver resetGame={resetGame}/>}
             <Footer />
         </PickUpStyle>
     )
