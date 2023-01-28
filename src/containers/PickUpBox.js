@@ -29,6 +29,15 @@ const PickUpBox = () => {
         setCardsDisplayed(cardsDisplayed-1)
     }
 
+    const resetGame = () => {
+        setCardsDisplayed(52)
+
+        const resetCardList = allCards.map(card => {
+            return {...card, display: true}
+        })
+        setAllCards(resetCardList)
+    }
+
     const fetchDeck = () => {
         fetch("https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
             .then(response => response.json())
@@ -53,7 +62,7 @@ const PickUpBox = () => {
     return (
         <PickUpStyle>
             <PickUpIntro />
-            {cardsDisplayed ? <CardList listOfCards={allCards} updateDisplay={updateDisplay}/> : <GameOver />}
+            {cardsDisplayed ? <CardList listOfCards={allCards} updateDisplay={updateDisplay}/> : <GameOver resetGame={resetGame}/>}
             <Footer />
         </PickUpStyle>
     )
