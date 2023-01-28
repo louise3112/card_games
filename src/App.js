@@ -1,9 +1,11 @@
-import './App.css';
+import './App.css'
+import WishBox from './containers/WishBox'
+import PickUpBox from './containers/PickUpBox'
 
 function App() {
     return (
-        <p>test</p>
+        <PickUpBox />
     )
 }
 
-export default App;
+export default App
