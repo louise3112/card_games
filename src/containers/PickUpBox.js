@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 
-import PickUpIntro from "../components/PickUpIntro"
+import Header from "../components/Header"
+import StartGame from "../components/StartGame"
 import CardList from "../components/CardList"
 import GameOver from "../components/GameOver"
 import Footer from "../components/Footer"
@@ -8,35 +9,18 @@ import Footer from "../components/Footer"
 import styled from "styled-components"
 
 const PickUpStyle = styled.div`
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
 `
-
 
 const PickUpBox = () => {
 
+    const [gameInProgress, setGameInProgress] = useState(false)
     const [allCards, setAllCards] = useState([])
     const [cardsDisplayed, setCardsDisplayed] = useState(52)
-
-    const updateDisplay = (cardClicked) => {
-        const cardIndex = allCards.findIndex(card => card.code === cardClicked.code)
-        const updatedCard = {...cardClicked}
-        updatedCard.display = false
-        const updatedList = [...allCards]
-        updatedList[cardIndex] = updatedCard
-        setAllCards(updatedList)
-        setCardsDisplayed(cardsDisplayed-1)
-    }
-
-    const resetGame = () => {
-        setCardsDisplayed(52)
-
-        const resetCardList = allCards.map(card => {
-            return {...card, display: true}
-        })
-        setAllCards(resetCardList)
-    }
 
     const fetchDeck = () => {
         fetch("https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
@@ -59,11 +43,44 @@ const PickUpBox = () => {
         fetchDeck()
     }, [])
 
+    const startGame = () => {
+        setGameInProgress(true)
+    }
+
+    const pickUpGame = () => {
+        if (cardsDisplayed) {
+            return <CardList listOfCards={allCards} updateDisplay={updateDisplay}/>
+        } else {
+            return <GameOver resetGame={resetGame}/>
+        }
+    }
+
+    const updateDisplay = (cardClicked) => {
+        const cardIndex = allCards.findIndex(card => card.code === cardClicked.code)
+        const updatedCard = {...cardClicked}
+        updatedCard.display = false
+        const updatedList = [...allCards]
+        updatedList[cardIndex] = updatedCard
+        setAllCards(updatedList)
+        setCardsDisplayed(cardsDisplayed-1)
+    }
+
+    const resetGame = () => {
+        setGameInProgress(false)
+        setCardsDisplayed(52)
+
+        const resetCardList = allCards.map(card => {
+            return {...card, display: true}
+        })
+        setAllCards(resetCardList)
+    }
+
     return (
         <PickUpStyle>
-            <PickUpIntro />
-            {/* <GameOver resetGame={resetGame}/> */}
-            {cardsDisplayed ? <CardList listOfCards={allCards} updateDisplay={updateDisplay}/> : <GameOver resetGame={resetGame}/>}
+            <Header titleText="52 Card Click-Up"/>
+            {!gameInProgress ? 
+                <StartGame instructions="Pick up all the cards as fast as you can... Click the deck to start!!" startGame={startGame}/> :
+                pickUpGame()}
             <Footer />
         </PickUpStyle>
     )
